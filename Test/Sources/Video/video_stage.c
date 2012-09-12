@@ -35,6 +35,9 @@
 #include <ardrone_tool/ardrone_tool.h>
 #include <ardrone_tool/Com/config_com.h>
 
+#include "cv.h"
+#include "highgui.h"
+
 #ifndef RECORD_VIDEO
 #define RECORD_VIDEO
 #endif
@@ -60,6 +63,8 @@ C_RESULT output_gtk_stage_open( void *cfg, vp_api_io_data_t *in, vp_api_io_data_
 
 C_RESULT output_gtk_stage_transform( void *cfg, vp_api_io_data_t *in, vp_api_io_data_t *out)
 {
+  IplImage *img = ipl_image_from_data((uint8_t*)in->buffers[0], 1);
+
   vp_os_mutex_lock(&video_update_lock);
  
   /* Get a reference to the last decoded picture */
@@ -68,6 +73,29 @@ C_RESULT output_gtk_stage_transform( void *cfg, vp_api_io_data_t *in, vp_api_io_
   vp_os_mutex_unlock(&video_update_lock);
 
   return (SUCCESS);
+}
+
+IplImage *ipl_image_from_data(uint8_t* data, int reduced_image)
+{
+  IplImage *currframe;
+  IplImage *dst;
+ 
+  if (!reduced_image)
+  {
+    currframe = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 3);
+    dst = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 3);
+  }
+  else
+  {
+    currframe = cvCreateImage(cvSize(176, 144), IPL_DEPTH_8U, 3);
+    dst = cvCreateImage(cvSize(176,144), IPL_DEPTH_8U, 3);
+    currframe->widthStep = 320*3;
+  }
+ 
+  currframe->imageData = data;
+  cvCvtColor(currframe, dst, CV_BGR2RGB);
+  cvReleaseImage(&currframe);
+  return dst;
 }
 
 C_RESULT output_gtk_stage_close( void *cfg, vp_api_io_data_t *in, vp_api_io_data_t *out)
@@ -196,8 +224,11 @@ DEFINE_THREAD_ROUTINE(video_stage, data)
     }
   }
 
+
+
   PRINT("   Video stage thread ended\n\n");
 
   return (THREAD_RET)0;
 }
+
 

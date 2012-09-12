@@ -39,11 +39,11 @@ const char *avformat_license(void);
 
 #include <time.h>
 #include <stdio.h>  /* FILE */
-#include "libavcodec/avcodec.h"
-#include "libavutil/dict.h"
+#include "../libavcodec/avcodec.h"
+#include "../libavutil/dict.h"
 
 #include "avio.h"
-#include "libavformat/version.h"
+#include "../libavformat/version.h"
 
 struct AVFormatContext;
 

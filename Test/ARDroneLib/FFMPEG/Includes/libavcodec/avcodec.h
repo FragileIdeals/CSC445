@@ -27,11 +27,11 @@
  */
 
 #include <errno.h>
-#include "libavutil/samplefmt.h"
-#include "libavutil/avutil.h"
-#include "libavutil/cpu.h"
+#include "../libavutil/samplefmt.h"
+#include "../libavutil/avutil.h"
+#include "../libavutil/cpu.h"
 
-#include "libavcodec/version.h"
+#include "../libavcodec/version.h"
 
 /**
  * Identify the syntax and semantics of the bitstream.
@@ -372,7 +372,7 @@ enum CodecID {
 #endif
 
 #if FF_API_OLD_AUDIOCONVERT
-#include "libavutil/audioconvert.h"
+#include "../libavutil/audioconvert.h"
 
 /* Audio channel masks */
 #define CH_FRONT_LEFT            AV_CH_FRONT_LEFT

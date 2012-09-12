@@ -21,7 +21,7 @@
 #ifndef AVFORMAT_VERSION_H
 #define AVFORMAT_VERSION_H
 
-#include "libavutil/avutil.h"
+#include "../libavutil/avutil.h"
 
 #define LIBAVFORMAT_VERSION_MAJOR 53
 #define LIBAVFORMAT_VERSION_MINOR  4
